@@ -141,7 +141,7 @@ fun HangmanGame() {
     // Text to display the hint, initially empty
     var hintText by rememberSaveable { mutableStateOf("") }
 
-    val isGameOver = remember(guessedLetters, livesRemaining) {
+    val isGameOver = remember(currentWord, guessedLetters, livesRemaining) {
         livesRemaining <= 0 || checkWin(currentWord.word, guessedLetters)
     }
 
@@ -217,12 +217,14 @@ fun HangmanGame() {
             Column(modifier = Modifier.weight(1.5f).fillMaxSize()){
                 // Panel 1：Letter selection
                 Box(modifier = Modifier.weight(2f)) {
-                    PanelChooseLetter(
-                        onLetterClick = ::onLetterClick,
-                        guessedLetters = guessedLetters,
-                        disabledLetters = disabledLetters,
-                        isGameOver = isGameOver
-                    )
+                    key(currentWord.word) {
+                        PanelChooseLetter(
+                            onLetterClick = ::onLetterClick,
+                            guessedLetters = guessedLetters,
+                            disabledLetters = disabledLetters,
+                            isGameOver = isGameOver
+                        )
+                    }
                 }
                 // Panel 2: Hint area, directly displaying hintText
                 Box(modifier = Modifier.weight(1f)) {
@@ -265,12 +267,14 @@ fun HangmanGame() {
                             .padding(bottom = 8.dp)
                     )
 
-                    PanelChooseLetter(
-                        onLetterClick = ::onLetterClick,
-                        guessedLetters = guessedLetters,
-                        disabledLetters = disabledLetters,
-                        isGameOver = isGameOver
-                    )
+                    key(currentWord.word) {
+                        PanelChooseLetter(
+                            onLetterClick = ::onLetterClick,
+                            guessedLetters = guessedLetters,
+                            disabledLetters = disabledLetters,
+                            isGameOver = isGameOver
+                        )
+                    }
                 }
             }
         }
